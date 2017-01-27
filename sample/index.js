@@ -10,7 +10,7 @@ import {
 } from '../src'
 
 const reducers = combineReducers({
-  queryCache: queryReducer
+  queries: queryReducer
 })
 
 const initialState = {
@@ -26,11 +26,13 @@ const store = createStore(
 const dummyQuery = query('this is the query', { param: 42 })
 const ResultView = dummyQuery(({ data }) => <p>result: { data }</p>)
 
-const fetcher = (q, v) => {
-  console.log('should fetch', q, v)
+const fetcher = (q, v, actionType) => {
+  console.log('should fetch', q, v, actionType)
+  return { type: 'FETCHING' }
 }
+
 const App = () => <Provider store={store}>
-  <QueryProvider fetcher={fetcher}>
+  <QueryProvider fetcher={fetcher} queryLoadingIndicator={<p>getting it...</p>}>
     <div>
       <h1>The Query Sample App</h1>
       <ResultView />

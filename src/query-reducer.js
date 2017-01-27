@@ -1,2 +1,6 @@
 //@flow
-export default (state: any = '', action: any) => state
+
+const initialState = {
+  statements: []
+}
+export default (state: any = initialState, action: any) => state

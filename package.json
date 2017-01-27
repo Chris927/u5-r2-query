@@ -22,9 +22,10 @@
   "author": "Chris Oloff <chris@uber5.com> (http://about.uber5.com/)",
   "license": "ISC",
   "dependencies": {
+    "ramda": "0.23.0",
     "react": "^15.0.0 || ^16.0.0",
-    "redux": "^2.0.0 || ^3.0.0",
-    "react-redux": "^4.0.0 || ^5.0.0"
+    "react-redux": "^4.0.0 || ^5.0.0",
+    "redux": "^2.0.0 || ^3.0.0"
   },
   "peerDependencies": {
     "react": "^15.0.0 || ^16.0.0",
