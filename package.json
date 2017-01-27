@@ -1,0 +1,50 @@
+{
+  "name": "u5-r2-query",
+  "version": "0.0.1",
+  "description": "Query an API (GraphQL, maybe others?) in a React/Redux application",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.uber5.com:chris/u5-r2-query.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "query",
+    "graphql",
+    "uber5"
+  ],
+  "author": "Chris Oloff <chris@uber5.com> (http://about.uber5.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "immutable": "3.8.1"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0 || ^16.0.0",
+    "redux": "^2.0.0 || ^3.0.0",
+    "react-redux": "^4.0.0 || ^5.0.0"
+  },
+  "dependencies": {
+    "react": "^15.0.0 || ^16.0.0",
+    "redux": "^2.0.0 || ^3.0.0",
+    "react-redux": "^4.0.0 || ^5.0.0"
+  },
+  "devDependencies": {
+    "react": "^15.0.0 || ^16.0.0",
+    "redux": "^2.0.0 || ^3.0.0",
+    "react-redux": "^4.0.0 || ^5.0.0",
+    "react-dom": "^15.0.0 || ^16.0.0",
+    "babel-cli": "6.22.2",
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-react": "6.22.0",
+    "babel-preset-stage-2": "6.22.0",
+    "jest": "18.1.0",
+    "rimraf": "2.5.4",
+    "source-map-support": "0.4.10",
+    "webpack": "1.14.0",
+    "webpack-dev-server": "1.16.2"
+  }
+}
