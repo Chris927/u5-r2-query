@@ -1,7 +1,6 @@
 import { List, Map } from 'immutable'
 import React from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 // import { graphql } from '../actions'
 
 const GRAPHQL_RESPONSE = 'graphql/RESPONSE'
