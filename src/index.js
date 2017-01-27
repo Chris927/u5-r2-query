@@ -1,12 +1,11 @@
 //@flow
 import React from 'react'
+import queryReducer from './query-reducer'
+import QueryProvider from './query-provider'
+import query from './query'
 
-export const queryReducer = (state: any = '', action: any) => state
-
-export const query = () => (Component : ReactClass<any>) => () => {
-  return <p>query comp.</p>
-}
-
-export const QueryProvider = ({ children } : { children: ReactClass<any> }) => {
-  return children
+export {
+  QueryProvider,
+  queryReducer,
+  query
 }

@@ -1,3 +1,5 @@
+//@flow
+
 import React from 'react'
 import { createStore, combineReducers } from 'redux'
 import ReactDOM from 'react-dom'
@@ -24,8 +26,11 @@ const store = createStore(
 const dummyQuery = query('this is the query', { param: 42 })
 const ResultView = dummyQuery(({ data }) => <p>result: { data }</p>)
 
+const fetcher = (q, v) => {
+  console.log('should fetch', q, v)
+}
 const App = () => <Provider store={store}>
-  <QueryProvider>
+  <QueryProvider fetcher={fetcher}>
     <div>
       <h1>The Query Sample App</h1>
       <ResultView />
