@@ -30,10 +30,8 @@ export default (
         // TODO: should be a configurable component to display errors
         return (<p>Unable to query API: { lastError.message || 'Error while fetching' }</p>)
       }
-      console.log('about to render', this.props, data)
-      const c = <Comp {...this.props} {...data} />
       return data
-        ? c
+        ? <Comp {...this.props} {...data} />
         : queryLoadingIndicator
     }
   }
