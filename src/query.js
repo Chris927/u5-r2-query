@@ -12,7 +12,7 @@ const RECEIVED = 'u5-r2-query/RECEIVED'
 export default (
   query: string,
   queryParams: any
-) => (Comp : ReactClass<any>) => componentProps => {
+) => (Comp : ReactClass<any>) => (componentProps: Object) => {
 
   class DataHolder extends React.Component {
     constructor(props) {

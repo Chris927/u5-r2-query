@@ -1,5 +1,6 @@
 import React from 'react'
 import query from '../query'
+import QueryProvider from '../query-provider'
 
 import { Provider } from 'react-redux'
 
@@ -10,18 +11,35 @@ const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 
 describe('query', () => {
-  it.skip('queries', () => {
+
+  it('shows "loading" and initiates the query', () => {
+
     const Component = ({ things }) => <p>{ JSON.stringify(things) }</p>
     const Connected = query('the query', { var1: 42 })(Component)
 
-    const store = mockStore({})
-
-    const rendered = render(<Provider store={store}><Connected /></Provider>)
-    return store.dispatch({ type: 'dummy' })
-    .then(() => {
-      // now we should have data?
-      expect()
+    const store = mockStore({
+      queries: {
+        keys: [],
+        values: []
+      }
     })
 
+    let fetcherCalled = false
+    const fetcher = (dispatch, query, values) => {
+      fetcherCalled = true
+    }
+
+    const rendered = render(
+      <Provider store={store}>
+        <QueryProvider fetcher={fetcher}>
+          <Connected />
+        </QueryProvider>
+      </Provider>
+    )
+
+    expect(rendered.toJSON().children[0].children[0]).toBe("Loading...")
+    expect(fetcherCalled).toBe(true)
+
   })
+
 })

@@ -3,12 +3,14 @@ import React from 'react'
 
 import contextTypes from './context-types'
 
-class QueryProvider extends React.Component {
+export const DefaultLoadingIndicator = () => <p>Loading...</p>
+
+export class QueryProvider extends React.Component {
   getChildContext() {
     const { fetcher, queryLoadingIndicator } = this.props
     return {
       fetcher,
-      queryLoadingIndicator: queryLoadingIndicator || (() => <p>Loading...</p>)
+      queryLoadingIndicator: queryLoadingIndicator || <DefaultLoadingIndicator />
     }
   }
   render() {
