@@ -65,6 +65,8 @@ const initialState = Map({
   results: List()
 })
 
+// TODO: should we provide an action creator to be called once
+// fetcher is done? queryReceived(query, variables, data)
 export const queriesReducer = (state = initialState, action) => {
   if (action.type === GRAPHQL_RESPONSE) {
     const { query, variables, data } = action

@@ -12,7 +12,7 @@ const RECEIVED = 'u5-r2-query/RECEIVED'
 export default (
   query: string,
   queryParams: any
-) => (component : ReactClass<any>) => () => {
+) => (Comp : ReactClass<any>) => () => {
 
   class DataHolder extends React.Component {
     constructor(props) {
@@ -30,8 +30,11 @@ export default (
         // TODO: should be a configurable component to display errors
         return (<p>Unable to query API: { lastError.message || 'Error while fetching' }</p>)
       }
+      console.log('about to render', this.props, data)
+      console.log('Comp', Comp)
+      const c = <Comp {...data} />
       return data
-        ? (<component {...this.props} {...data} />)
+        ? c
         : queryLoadingIndicator
     }
   }
@@ -39,11 +42,10 @@ export default (
 
   function getResult(state, query, variables) {
     console.log('getResult', state, query, variables)
-    const statementsIndex = state.statements.indexOf(query)
-    if (statementsIndex === -1) return undefined;
-    const variablesIndex = state.results[statementsIndex].indexOf(variables)
-    if (variablesIndex === -1) return undefined;
-    return state.results[statementsIndex].data[variablesIndex]
+    const key = JSON.stringify({ q: query, v: variables })
+    const ix = state.keys.indexOf(key)
+    if (ix === -1) return undefined;
+    return state.values[ix].data;
   }
 
   const DataHolderContainer = connect((state, ownProps) => {
@@ -51,9 +53,7 @@ export default (
       data: getResult(state.queries, query, queryParams)
     }
   }, dispatch => ({
-    fetch: (fetcher, query, variables) => {
-      return dispatch(fetcher(query, variables, RECEIVED))
-    }
+    fetch: (fetcher, query, variables) => fetcher(dispatch, query, variables)
   }))(DataHolder)
 
   return <DataHolderContainer />

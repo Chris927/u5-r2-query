@@ -6,11 +6,13 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
 import {
-  queryReducer, query, QueryProvider
+  configureQueryReducer, query, QueryProvider
 } from '../src'
 
+const FETCHED = 'FETCHED'
+
 const reducers = combineReducers({
-  queries: queryReducer
+  queries: configureQueryReducer({ fetchedAction: FETCHED })
 })
 
 const initialState = {
@@ -24,15 +26,21 @@ const store = createStore(
 )
 
 const dummyQuery = query('this is the query', { param: 42 })
-const ResultView = dummyQuery(({ data }) => <p>result: { data }</p>)
+const ResultView = dummyQuery(({ guess }) => <p>result: { guess }</p>)
 
-const fetcher = (q, v, actionType) => {
-  console.log('should fetch', q, v, actionType)
-  return { type: 'FETCHING' }
+const fetcher = (dispatch, query, values) => {
+  console.log('should fetch:', query, values)
+  setTimeout(() => {
+    dispatch({ type: FETCHED, query, values, data: { guess: 'what' }})
+  }, 1000)
+  return dispatch({ type: 'FETCHING' })
 }
 
 const App = () => <Provider store={store}>
-  <QueryProvider fetcher={fetcher} queryLoadingIndicator={<p>getting it...</p>}>
+  <QueryProvider
+    fetcher={fetcher}
+    queryLoadingIndicator={<p>getting it...</p>}
+  >
     <div>
       <h1>The Query Sample App</h1>
       <ResultView />
