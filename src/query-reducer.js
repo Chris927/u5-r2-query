@@ -6,7 +6,7 @@ import { createReducer } from './utils'
 const doesNotContain = R.complement(R.contains)
 const appendUnlessPresent = what => R.when(doesNotContain(what), R.append(what))
 
-const setResult = R.curry((query, params, data, state) => {
+const storeResult = R.curry((query, params, data, state) => {
 
   const key = JSON.stringify({ q: query, v: params })
 
@@ -32,7 +32,7 @@ export default ({
   keys: [],
   values: []
 }, {
-  [fetchedAction]: (state, action) => setResult(
+  [fetchedAction]: (state, action) => storeResult(
     action.query,
     action.values,
     action.data
