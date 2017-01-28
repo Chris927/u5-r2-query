@@ -25,13 +25,16 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
-const dummyQuery = query('this is the query', { param: 42 })
-const ResultView = dummyQuery(({ guess }) => <p>result: { guess }</p>)
+const query1 = query('this is the query', { param: 42 })
+const ResultView = query1(({ guess }) => <p>result: { guess }</p>)
 
-const fetcher = (dispatch, query, values) => {
-  console.log('should fetch:', query, values)
+const query2 = query('another query', (state, ownProps) => ({ fromOwnProps: ownProps.x }))
+const Result2View = query2(({ guess }) => <p>result (2): { guess }</p>)
+
+const fetcher = (dispatch, query, values, ownProps) => {
+  console.log('should fetch:', query, values, ownProps)
   setTimeout(() => {
-    dispatch({ type: FETCHED, query, values, data: { guess: 'what' }})
+    dispatch({ type: FETCHED, query, values, data: { guess: 'what', ownProps }})
   }, 1000)
   return dispatch({ type: 'FETCHING' })
 }
@@ -43,7 +46,8 @@ const App = () => <Provider store={store}>
   >
     <div>
       <h1>The Query Sample App</h1>
-      <ResultView />
+      <ResultView x={3}/>
+      <Result2View x={4}/>
     </div>
   </QueryProvider>
 </Provider>
