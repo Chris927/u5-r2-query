@@ -2,8 +2,11 @@
   "name": "u5-r2-query",
   "version": "0.0.1",
   "description": "Query an API (GraphQL, maybe others?) in a React/Redux application",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "babel src --out-dir dist --source-maps --ignore \"**/__tests__/*.js\"",
+    "prepublish": "npm run clean && npm test && npm run build",
+    "clean": "rimraf dist",
     "test": "flow && jest",
     "test:watch": "npm test -- --watch",
     "sample:basic": "webpack-dev-server --config ./sample/webpack.config.js"
