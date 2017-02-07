@@ -19,9 +19,11 @@ export default (
       super(props)
     }
     componentWillMount() {
-      const { data, fetch, params } = this.props
+      const { data, fetch, mustFetch, params } = this.props
       const { fetcher } = this.context
-      fetch(fetcher, query, params)
+      if (mustFetch) {
+        fetch(fetcher, query, params)
+      }
     }
     render() {
       const { query, queryParams, data, lastError, children } = this.props
@@ -37,17 +39,31 @@ export default (
   }
   DataHolder.contextTypes = contextTypes
 
-  function getResult(state, query, variables) {
+  function getQueryState(state, query, variables) {
     const key = JSON.stringify({ q: query, v: variables })
     const ix = state.keys.indexOf(key)
     if (ix === -1) return undefined;
-    return state.values[ix].data;
+    return state.values[ix]
+  }
+
+  function getResult(state, query, variables) {
+    const queryState = getQueryState(state, query, variables);
+    if (!queryState) return undefined;
+    return queryState.data
+  }
+
+  function mustFetch(state, query, variables) {
+    const queryState = getQueryState(state, query, variables)
+    console.log('mustFetch, queryState', queryState)
+    if (!queryState) return true;
+    return false
   }
 
   const DataHolderContainer = connect((state, ownProps) => {
     const params = (typeof queryParams === 'function') ? queryParams(state, ownProps) : queryParams
     return {
       data: getResult(state.queries, query, params),
+      mustFetch: mustFetch(state.queries, query, params),
       params
     }
   }, (dispatch, ownProps) => ({
