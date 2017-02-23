@@ -19,7 +19,7 @@ const FETCHED = 'FETCHED'
 // DataHolderContainer would need to grab it from the React context?)
 const reducers = combineReducers({
   queries: configureQueryReducer({ fetchedAction: FETCHED }),
-  count: (state = 0, action) => action.type === 'COUNT' && Math.random() > 0.5 ? state + 1 : state
+  count: (state = 0, action) => action.type === 'COUNT' ? state + 1 : state
 })
 
 const store = createStore(
@@ -49,7 +49,7 @@ const fetcher = (dispatch, query, values, ownProps) => {
   console.log('about to fetch:', query, values, ownProps)
   setTimeout(() => {
     dispatch({ type: FETCHED, query, values, data: {
-      result: ownProps.x === 4 ? 'ha, x is 4' : 'what',
+      result: ownProps.x === 4 ? 'ha, x is 4' : `data as of ${ new Date().toString() }`,
       ownProps
     }})
   }, 1500 * Math.random() /* just to simulate different response times */)

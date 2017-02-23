@@ -26,3 +26,15 @@ Follow the [documented sample](./sample/index.js). You can run the sample with
 ```
 npm run sample:basic
 ```
+
+# Example usage
+
+./sample contains a simple example.
+
+./sample-rerendering contains a sample that demonstrates the cache's
+"time-to-live", by forcing rerendering, which, depending on the cache having
+expired or not, results in re-fetching. This second example can be run with
+
+```
+npm run sample:rerendering
+```
