@@ -21,4 +21,8 @@ The cache is refreshed whenever the connected components mounts (on
 npm install --save u5-r2-query
 ```
 
-Follow the [documented sample](./sample/index.js).
+Follow the [documented sample](./sample/index.js). You can run the sample with
+
+```
+npm run sample:basic
+```
