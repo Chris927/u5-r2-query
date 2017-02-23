@@ -20,8 +20,8 @@ export default (
     }
     componentWillMount() {
       const { data, fetch, mustFetch, params } = this.props
-      const { fetcher } = this.context
-      if (mustFetch) {
+      const { fetcher, ttl } = this.context
+      if (mustFetch(ttl)) {
         fetch(fetcher, query, params)
       }
     }
@@ -39,10 +39,16 @@ export default (
   }
   DataHolder.contextTypes = contextTypes
 
-  function getQueryState(state, query, variables) {
+  function getIndex(state, query, variables) {
     const key = JSON.stringify({ q: query, v: variables })
     const ix = state.keys.indexOf(key)
     if (ix === -1) return undefined;
+    return ix
+  }
+
+  function getQueryState(state, query, variables) {
+    const ix = getIndex(state, query, variables)
+    if (ix === undefined) return undefined;
     return state.values[ix]
   }
 
@@ -52,12 +58,22 @@ export default (
     return queryState.data
   }
 
-  function mustFetch(state, query, variables) {
+  const mustFetch = R.curry((state, query, variables, ttl) => {
+    const ix = getIndex(state, query, variables)
     const queryState = getQueryState(state, query, variables)
-    console.log('mustFetch, queryState', queryState)
-    if (!queryState) return true;
+    console.log('ttl=' + ttl)
+    if (!queryState) {
+      console.log('must fetch, because no result cached yet, ix=' + ix)
+      return true
+    }
+    console.log('queryState', queryState.at)
+    if (queryState.at.getTime() + ttl < new Date().getTime()) {
+      console.log('must fetch, as cache expired, ix=' + ix)
+      return true
+    }
+    console.log('not fetching, result still cached, ix=' + ix)
     return false
-  }
+  })
 
   const DataHolderContainer = connect((state, ownProps) => {
     const params = (typeof queryParams === 'function') ? queryParams(state, ownProps) : queryParams
