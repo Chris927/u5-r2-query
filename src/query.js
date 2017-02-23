@@ -42,13 +42,12 @@ export default (
   function getIndex(state, query, variables) {
     const key = JSON.stringify({ q: query, v: variables })
     const ix = state.keys.indexOf(key)
-    if (ix === -1) return undefined;
     return ix
   }
 
   function getQueryState(state, query, variables) {
     const ix = getIndex(state, query, variables)
-    if (ix === undefined) return undefined;
+    if (ix === -1) return undefined;
     return state.values[ix]
   }
 
@@ -61,7 +60,6 @@ export default (
   const mustFetch = R.curry((state, query, variables, ttl) => {
     const ix = getIndex(state, query, variables)
     const queryState = getQueryState(state, query, variables)
-    console.log('ttl=' + ttl)
     if (!queryState) {
       console.log('must fetch, because no result cached yet, ix=' + ix)
       return true
