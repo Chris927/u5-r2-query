@@ -19,14 +19,23 @@ export default (
       super(props)
     }
     componentWillMount() {
-      const { data, fetch, mustFetch, params } = this.props
+      const { fetch, mustFetch, params } = this.props
+      const { fetcher, ttl } = this.context
+      if (mustFetch(ttl)) {
+        fetch(fetcher, query, params)
+      }
+    }
+    componentWillReceiveProps(nextProps) {
+      // TODO: repeats what we do in componentWillMount, but with `nextProps`
+      // which causes fetching double (in some cases)
+      const { fetch, mustFetch, params } = nextProps
       const { fetcher, ttl } = this.context
       if (mustFetch(ttl)) {
         fetch(fetcher, query, params)
       }
     }
     render() {
-      const { query, queryParams, data, lastError, children } = this.props
+      const { query, data, lastError, children } = this.props
       const { queryLoadingIndicator } = this.context
       if (lastError) {
         // TODO: should be a configurable component to display errors
