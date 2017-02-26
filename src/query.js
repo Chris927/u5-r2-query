@@ -73,8 +73,7 @@ export default (
       console.log('must fetch, because no result cached yet, ix=' + ix)
       return true
     }
-    console.log('queryState', queryState.at)
-    if (queryState.at.getTime() + ttl < new Date().getTime()) {
+    if (!queryState.at || queryState.at + ttl < new Date().getTime()) {
       console.log('must fetch, as cache expired, ix=' + ix)
       return true
     }

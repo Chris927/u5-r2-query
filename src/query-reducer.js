@@ -14,7 +14,7 @@ const storeResult = R.curry((query, params, data, state) => {
   const index = R.indexOf(key, keys)
 
   const values = R.compose(
-    R.adjust(v => ({ data, at: new Date() }), index),
+    R.adjust(v => ({ data, at: new Date().getTime() }), index),
     R.when(
       R.propSatisfies(R.lt(R.__, keys.length)),
       R.append({})
