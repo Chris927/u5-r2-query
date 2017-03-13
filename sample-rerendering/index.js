@@ -76,7 +76,7 @@ const App = () => <Provider store={store}>
   <div>
     <QueryProvider
       fetcher={fetcher}
-      ttl={2000}
+      ttl={6000}
       queryLoadingIndicator={<p>getting it...</p>}
     >
       <ChangeWrapper>

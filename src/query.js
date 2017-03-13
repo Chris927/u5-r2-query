@@ -30,9 +30,22 @@ export default (
       // which causes fetching double (in some cases)
       const { fetch, mustFetch, params } = nextProps
       const { fetcher, ttl } = this.context
+      // console.log('componentWillReceiveProps', nextProps)
       if (mustFetch(ttl)) {
         fetch(fetcher, query, params)
       }
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+      // console.log('shouldComponentUpdate, this.props, nextProps', this.props, nextProps)
+      const { data, params, lastError } = this.props
+      if (R.equals(nextProps.data, data)
+      && R.equals(nextProps.params, params)
+      && R.equals(nextProps.lastError, lastError)) {
+        // console.log('shouldComponentUpdate, FALSE');
+        return false
+      }
+      // console.log('shouldComponentUpdate, TRUE');
+      return true
     }
     render() {
       const { query, data, lastError, children } = this.props
@@ -85,7 +98,7 @@ export default (
     const params = (typeof queryParams === 'function') ? queryParams(state, ownProps) : queryParams
     return {
       data: getResult(state.queries, query, params),
-      mustFetch: mustFetch(state.queries, query, params),
+      mustFetch: ttl => mustFetch(state.queries, query, params, ttl),
       params
     }
   }, (dispatch, ownProps) => ({
