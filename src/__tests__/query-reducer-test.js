@@ -43,7 +43,7 @@ describe('reducer', () => {
     const reducer = configureQueryReducer({ fetchedAction: 'FETCHED' })
     const nextState = reducer(
       state,
-      { type: INVALIDATE_QUERY_RESULT }
+      { type: INVALIDATE_QUERY_RESULT, query, values: variables, data }
     )
     expect(nextState.keys[0]).toEqual(JSON.stringify({ q: query, v: variables }))
     expect(nextState.values[0]).toBeFalsy()

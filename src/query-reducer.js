@@ -33,7 +33,7 @@ const clearResult = (query, params, data, state) => {
   const keys = appendUnlessPresent(key)(state.keys)
   const index = R.indexOf(key, keys)
 
-  const values = R.adjust(v => undefined, index)
+  const values = R.adjust(v => undefined, index)(state.values)
 
   return { keys, values }
 }
