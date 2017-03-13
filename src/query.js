@@ -5,9 +5,7 @@ import * as R from 'ramda'
 
 import contextTypes from './context-types'
 
-// actions (TODO)
-// const REQUESTED = 'u5-r2-query/REQUESTED'
-const RECEIVED = 'u5-r2-query/RECEIVED'
+import { FETCH } from './query-reducer'
 
 export default (
   query: string,
@@ -86,6 +84,10 @@ export default (
       console.log('must fetch, because no result cached yet, ix=' + ix)
       return true
     }
+    if (queryState.fetching) {
+      console.log('not fetching, fetching already, ix=' + ix)
+      return false
+    }
     if (!queryState.at || queryState.at + ttl < new Date().getTime()) {
       console.log('must fetch, as cache expired, ix=' + ix)
       return true
@@ -102,7 +104,10 @@ export default (
       params
     }
   }, (dispatch, ownProps) => ({
-    fetch: (fetcher, query, variables) => fetcher(dispatch, query, variables, ownProps)
+    fetch: (fetcher, query, variables) => {
+      dispatch({ type: FETCH, query, values: variables, at: new Date().getTime() })
+      fetcher(dispatch, query, variables, ownProps)
+    }
   }))(DataHolder)
 
   return <DataHolderContainer {...componentProps} />
