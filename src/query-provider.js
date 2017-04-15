@@ -7,10 +7,11 @@ export const DefaultLoadingIndicator = () => <p>Loading...</p>
 
 export class QueryProvider extends React.Component {
   getChildContext() {
-    const { fetcher, queryLoadingIndicator, ttl } = this.props
+    const { fetcher, queryLoadingIndicator, ttl, retryInterval } = this.props
     return {
       fetcher,
       ttl: ttl || 10000,
+      retryInterval: retryInterval || 45000,
       queryLoadingIndicator: queryLoadingIndicator || <DefaultLoadingIndicator />
     }
   }

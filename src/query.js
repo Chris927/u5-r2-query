@@ -18,8 +18,8 @@ export default (
     }
     componentWillMount() {
       const { fetch, mustFetch, params } = this.props
-      const { fetcher, ttl } = this.context
-      if (mustFetch(ttl)) {
+      const { fetcher, ttl, retryInterval } = this.context
+      if (mustFetch(ttl, retryInterval)) {
         fetch(fetcher, query, params)
       }
     }
@@ -27,9 +27,9 @@ export default (
       // TODO: repeats what we do in componentWillMount, but with `nextProps`
       // which causes fetching double (in some cases)
       const { fetch, mustFetch, params } = nextProps
-      const { fetcher, ttl } = this.context
+      const { fetcher, ttl, retryInterval } = this.context
       // console.log('componentWillReceiveProps', nextProps)
-      if (mustFetch(ttl)) {
+      if (mustFetch(ttl, retryInterval)) {
         fetch(fetcher, query, params)
       }
     }
@@ -77,7 +77,7 @@ export default (
     return queryState.data
   }
 
-  const mustFetch = R.curry((state, query, variables, ttl) => {
+  const mustFetch = R.curry((state, query, variables, ttl, retryInterval) => {
     const ix = getIndex(state, query, variables)
     const queryState = getQueryState(state, query, variables)
     if (!queryState) {
@@ -85,8 +85,13 @@ export default (
       return true
     }
     if (queryState.fetching) {
-      console.log('not fetching, fetching already, ix=' + ix)
-      return false
+      if (queryState.at + retryInterval < new Date().getTime()) {
+        console.log('fetching already, but retrying, ix=' + ix)
+        return true
+      } else {
+        console.log('not fetching, fetching already, ix=' + ix)
+        return false
+      }
     }
     if (!queryState.at || queryState.at + ttl < new Date().getTime()) {
       console.log('must fetch, as cache expired, ix=' + ix)
@@ -100,7 +105,7 @@ export default (
     const params = (typeof queryParams === 'function') ? queryParams(state, ownProps) : queryParams
     return {
       data: getResult(state.queries, query, params),
-      mustFetch: ttl => mustFetch(state.queries, query, params, ttl),
+      mustFetch: (ttl, retryInterval) => mustFetch(state.queries, query, params, ttl, retryInterval),
       params
     }
   }, (dispatch, ownProps) => ({
