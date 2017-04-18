@@ -85,7 +85,8 @@ export default (
       return true
     }
     if (queryState.fetching) {
-      if (queryState.at + retryInterval < new Date().getTime()) {
+      if (queryState.startFetchingAt
+        && queryState.startFetchingAt + retryInterval < new Date().getTime()) {
         console.log('fetching already, but retrying, ix=' + ix)
         return true
       } else {
