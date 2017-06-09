@@ -9,8 +9,11 @@ import { FETCH } from './query-reducer'
 
 export default (
   query: string,
-  queryParams: any
+  queryParams: any,
+  options?: { debug?: boolean }
 ) => (Comp : ReactClass<any>) => (componentProps: Object) => {
+
+  const log = options && options.debug ? console.log : a => a
 
   class DataHolder extends React.Component {
     constructor(props) {
@@ -24,25 +27,21 @@ export default (
       }
     }
     componentWillReceiveProps(nextProps) {
-      // TODO: repeats what we do in componentWillMount, but with `nextProps`
-      // which causes fetching double (in some cases)
       const { fetch, params } = nextProps
       const { fetcher } = this.context
-      // console.log('componentWillReceiveProps', nextProps)
-      if (!R.equals(params, nextProps.params)) { // experiment: only refetch when params have changed?
+      if (!R.equals(params, nextProps.params)) {
+        log('componentWillReceiveProps, fetch', query, params)
         fetch(fetcher, query, params)
       }
     }
     shouldComponentUpdate(nextProps, nextState) {
-      // console.log('shouldComponentUpdate, this.props, nextProps', this.props, nextProps)
       const { data, params, lastError } = this.props
       if (R.equals(nextProps.data, data)
       && R.equals(nextProps.params, params)
       && R.equals(nextProps.lastError, lastError)) {
-        // console.log('shouldComponentUpdate, FALSE');
+        log('shouldComponentUpdate, true', query, params)
         return false
       }
-      // console.log('shouldComponentUpdate, TRUE');
       return true
     }
     render() {
@@ -52,8 +51,11 @@ export default (
         // TODO: should be a configurable component to display errors
         return (<p>Unable to query API: { lastError.message || 'Error while fetching' }</p>)
       }
+
+      // TODO: We should *not* pass this.props at all?
+      const compProps = R.pickBy((key, val) => !R.contains(key, [ 'fetch', 'mustFetch' ]))
       return data
-        ? <Comp {...this.props} {...data} />
+        ? <Comp {...compProps} {...data} />
         : queryLoadingIndicator
     }
   }
@@ -81,33 +83,33 @@ export default (
     const ix = getIndex(state, query, variables)
     const queryState = getQueryState(state, query, variables)
     if (!queryState) {
-      console.log('must fetch, because no result cached yet, ix=' + ix)
+      log('must fetch, because no result cached yet, ix=' + ix)
       return true
     }
     if (queryState.fetching) {
       if (queryState.startFetchingAt
         && queryState.startFetchingAt + retryInterval < new Date().getTime()) {
-        console.log('fetching already, but retrying, ix=' + ix)
+        log('fetching already, but retrying, ix=' + ix)
         return true
       } else {
-        console.log('not fetching, fetching already, ix=' + ix)
+        log('not fetching, fetching already, ix=' + ix)
         return false
       }
     }
     if (!queryState.at || queryState.at + ttl < new Date().getTime()) {
-      console.log('must fetch, as cache expired, ix=' + ix)
+      log('must fetch, as cache expired, ix=' + ix)
       return true
     }
-    console.log('not fetching, result still cached, ix=' + ix)
+    log('not fetching, result still cached, ix=' + ix)
     return false
   })
 
   const DataHolderContainer = connect((state, ownProps) => {
     const params = (typeof queryParams === 'function') ? queryParams(state, ownProps) : queryParams
     const data = getResult(state.queries, query, params)
-    console.log('DataHolderContainer, data', data, query, params)
+    log('DataHolderContainer, data', data, query, params)
     if (!data) {
-      console.log('DataHolderContainer, no data')
+      log('DataHolderContainer, no data')
     }
     return {
       data: getResult(state.queries, query, params),

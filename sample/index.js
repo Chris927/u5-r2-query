@@ -36,7 +36,12 @@ const query1 = query('this is the query', { param: 42 })
 const ResultView = query1(({ result }) => <p>First result: { result }</p>)
 
 // `query2` is a query, where parameters are determined from state and ownProps
-const query2 = query('another query', (state, ownProps) => ({ fromOwnProps: ownProps.x }))
+// in addition: we
+const query2 = query(
+  'another query',
+  (state, ownProps) => ({ fromOwnProps: ownProps.x }),
+  { debug: true }
+)
 
 // Component that uses `query2`
 const Result2View = query2(({ result }) => <p>Second result: { result }</p>)
