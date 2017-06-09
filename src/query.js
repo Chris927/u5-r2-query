@@ -26,10 +26,10 @@ export default (
     componentWillReceiveProps(nextProps) {
       // TODO: repeats what we do in componentWillMount, but with `nextProps`
       // which causes fetching double (in some cases)
-      const { fetch, mustFetch, params } = nextProps
-      const { fetcher, ttl, retryInterval } = this.context
+      const { fetch, params } = nextProps
+      const { fetcher } = this.context
       // console.log('componentWillReceiveProps', nextProps)
-      if (mustFetch(ttl, retryInterval)) {
+      if (!R.equals(params, nextProps.params)) { // experiment: only refetch when params have changed?
         fetch(fetcher, query, params)
       }
     }
