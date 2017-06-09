@@ -104,6 +104,11 @@ export default (
 
   const DataHolderContainer = connect((state, ownProps) => {
     const params = (typeof queryParams === 'function') ? queryParams(state, ownProps) : queryParams
+    const data = getResult(state.queries, query, params)
+    console.log('DataHolderContainer, data', data, query, params)
+    if (!data) {
+      console.log('DataHolderContainer, no data')
+    }
     return {
       data: getResult(state.queries, query, params),
       mustFetch: (ttl, retryInterval) => mustFetch(state.queries, query, params, ttl, retryInterval),
