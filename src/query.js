@@ -53,7 +53,7 @@ export default (
       }
 
       // TODO: We should *not* pass this.props at all?
-      const compProps = R.pickBy((key, val) => !R.contains(key, [ 'fetch', 'mustFetch' ]))
+      const compProps = R.pickBy((key, val) => !R.contains(key, [ 'fetch', 'mustFetch' ]))(componentProps)
       return data
         ? <Comp {...compProps} {...data} />
         : queryLoadingIndicator

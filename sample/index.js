@@ -44,7 +44,7 @@ const query2 = query(
 )
 
 // Component that uses `query2`
-const Result2View = query2(({ result }) => <p>Second result: { result }</p>)
+const Result2View = query2(({ result, x }) => <p>Second result: { result }, x={x}</p>)
 
 // The fetcher would typically query an API or do whatever else to answer the
 // query. By using `ownProps.x` we demonstrate how ownProps can be passed
