@@ -56,18 +56,18 @@ const fetcher = (dispatch, query, values, ownProps) => {
   return dispatch({ type: 'FETCHING' })
 }
 
-let ChangeWrapper = ({ count, children, onIncrease }) => (
+const ChangeWrapperComponent = ({ count, children, onIncrease }) => (
   <div>
     <p>Counted: { count }. <button onClick={onIncrease}>+1</button></p>
     { children }
   </div>
 )
-ChangeWrapper = connect((state, ownProps) => ({
+const ChangeWrapper = connect((state, ownProps) => ({
   count: state.count,
   ...ownProps
 }), dispatch => ({
   onIncrease: () => dispatch({ type: 'COUNT' })
-}))(ChangeWrapper)
+}))(ChangeWrapperComponent)
 
 // In addition to a typical React/redux setup, we need to configure at least
 // the fetcher. We can also specify a `queryLoadingIndicator` to appear

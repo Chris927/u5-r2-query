@@ -44,7 +44,8 @@ const clearResult = (query, params, data, state) => {
 const cleanup = (state, at) => {
 
   // TODO: time after which we cleanup hard coded
-  const toClear = state.values.map(v => v && v.at && v.at + 60 * 1000 < at ? true : false)
+  // TODO: cleanup disabled for now
+  const toClear = state.values.map(v => false /* v && v.at && v.at + 60 * 1000 < at ? true : false */)
 
   const keys = R.zip(state.keys, toClear)
   .map(([ key, clear ]) => clear ? null : key)

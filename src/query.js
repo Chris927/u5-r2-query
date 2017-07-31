@@ -13,6 +13,7 @@ export default (
   options?: { debug?: boolean }
 ) => (Comp : ReactClass<any>) => (componentProps: Object) => {
 
+  // $FlowFixMe
   const log = options && options.debug ? console.log : a => a
 
   class DataHolder extends React.Component {
