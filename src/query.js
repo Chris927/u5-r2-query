@@ -39,9 +39,10 @@ export default (
       if (R.equals(nextProps.data, data)
       && R.equals(nextProps.params, params)
       && R.equals(nextProps.lastError, lastError)) {
-        log('shouldComponentUpdate, true', query, params)
+        log('shouldComponentUpdate, false', query, params)
         return false
       }
+      log('shouldComponentUpdate, true', query, params)
       return true
     }
     render() {
