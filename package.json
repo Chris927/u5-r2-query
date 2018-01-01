@@ -1,6 +1,6 @@
 {
   "name": "u5-r2-query",
-  "version": "0.0.9-nocleanup",
+  "version": "0.1.0-nocleanup",
   "description": "Query an API (GraphQL, maybe others?) in a React/Redux application",
   "main": "dist/index.js",
   "scripts": {
