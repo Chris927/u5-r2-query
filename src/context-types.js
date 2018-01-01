@@ -1,11 +1,12 @@
 //@flow
 
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default {
-  fetcher: React.PropTypes.func.isRequired,
-  queryStatePath: React.PropTypes.string,
-  ttl: React.PropTypes.number,
-  retryInterval: React.PropTypes.number,
-  queryLoadingIndicator: React.PropTypes.element
+  fetcher: PropTypes.func.isRequired,
+  queryStatePath: PropTypes.string,
+  ttl: PropTypes.number,
+  retryInterval: PropTypes.number,
+  queryLoadingIndicator: PropTypes.element
 }

@@ -76,4 +76,5 @@ const App = () => <Provider store={store}>
   </QueryProvider>
 </Provider>
 
-ReactDOM.render(<App />, document.getElementById('app'))
+const el = document.getElementById('app')
+ReactDOM.render(<App />, ((el: any): Element))

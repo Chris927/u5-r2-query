@@ -11,12 +11,12 @@ export default (
   query: string,
   queryParams: any,
   options?: { debug?: boolean }
-) => (Comp : ReactClass<any>) => (componentProps: Object) => {
+) => (Comp : React$ComponentType<any>) => (componentProps: Object) => {
 
   // $FlowFixMe
   const log = options && options.debug ? console.log : a => a
 
-  class DataHolder extends React.Component {
+  class DataHolder extends React.Component<*> {
     constructor(props) {
       super(props)
     }

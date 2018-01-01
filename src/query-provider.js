@@ -5,7 +5,7 @@ import contextTypes from './context-types'
 
 export const DefaultLoadingIndicator = () => <p>Loading...</p>
 
-export class QueryProvider extends React.Component {
+export class QueryProvider extends React.Component<any> {
   getChildContext() {
     const { fetcher, queryLoadingIndicator, ttl, retryInterval } = this.props
     return {
